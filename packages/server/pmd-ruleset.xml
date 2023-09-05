@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<ruleset name="PHPMD rule set"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
+                     http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="
+                     http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>
+        PHPMD rule set.
+    </description>
+
+    <!-- Clean Code Rules -->
+    <rule ref="rulesets/cleancode.xml">
+        <exclude name="BooleanArgumentFlag"></exclude>
+        <exclude name="StaticAccess"></exclude>
+        <exclude name="MissingImport"></exclude>
+    </rule>
+
+    <!-- Code Size Rules -->
+    <rule ref="rulesets/codesize.xml"/>
+
+    <!-- Controversial Rules -->
+    <rule ref="rulesets/controversial.xml"/>
+
+    <!-- Design Rules -->
+    <rule ref="rulesets/design.xml">
+        <exclude name="CouplingBetweenObjects"></exclude>
+    </rule>
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+            <property name="maximum">
+                <value>16</value>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Naming Rules -->
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortVariable"/>
+        <exclude name="LongVariable"/>
+    </rule>
+
+    <!-- Unused Code Rules -->
+    <rule ref="rulesets/unusedcode.xml"/>
+
+    <exclude-pattern>*Monolog*</exclude-pattern>
+    <exclude-pattern>*Version*</exclude-pattern>
+</ruleset>

@@ -1,0 +1,22 @@
+grumphp:
+  ascii:
+    failed: ~
+    succeeded: ~
+  parallel:
+    enabled: true
+    max_workers: 4 # Reduced for testing
+  fixer:
+    enabled: false # Disabled for testing
+    fix_by_default: false # Disabled for testing
+  tasks:
+    phpcsfixer:
+      config: ".php-cs-fixer.dist.php" # Ensure this file exists
+    phpmd:
+      whitelist_patterns: ["src/"]
+      exclude: []
+      report_format: "text"
+      ruleset: ["./pmd-ruleset.xml"] # Ensure this file exists
+    phpstan:
+      configuration: "./phpstan.neon" # Ensure this file exists
+      use_grumphp_paths: false
+    psalm: ~

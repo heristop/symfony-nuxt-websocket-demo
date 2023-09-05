@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<psalm
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+
+    errorLevel="7"
+>
+    <projectFiles>
+        <directory name="src" />
+
+        <ignoreFiles>
+            <directory name="migrations" />
+            <directory name="vendor" />
+
+            <file name="src/Kernel.php" />
+            <file name="public/index.php" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <!-- See: https://psalm.dev/docs/running_psalm/error_levels/ -->
+    <issueHandlers>
+        <!-- Include auto-fixable handlers that can be safely auto-fixed regardless of set errorLevel -->
+        <UnnecessaryVarAnnotation errorLevel="error"/>      <!-- Feature-specific -->
+        <UnusedVariable errorLevel="error"/>                <!-- Feature-specific -->
+        <MismatchingDocblockParamType errorLevel="error"/>  <!-- Level 5 -->
+        <MismatchingDocblockReturnType errorLevel="error"/> <!-- Level 5 -->
+        <InvalidFalsableReturnType errorLevel="error"/>     <!-- Level 3 -->
+
+        <!-- Suppress auto-fixable handlers generating unintended behaviors -->
+        <InvalidReturnType errorLevel="suppress"/>         <!-- Level 7 -->
+        <InvalidNullableReturnType errorLevel="suppress"/> <!-- Level 6 -->
+        <MissingParamType errorLevel="suppress"/>          <!-- Level 3 -->
+        <MissingReturnType errorLevel="suppress"/>         <!-- Level 3 -->
+
+        <!-- Always treated as errors  -->
+        <MissingTemplateParam errorLevel="info"/>
+
+        <!-- Only relevant for PHP 8 -->
+        <ParamNameMismatch errorLevel="info"/> <!-- Level 7 -->
+
+        <!-- Good for anything but iterables, where it's too strict considering PHP's current type-hinting limitations -->
+        <InvalidArgument errorLevel="info"/> <!-- Level 6 -->
+    </issueHandlers>
+</psalm>

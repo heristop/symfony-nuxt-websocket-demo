@@ -1,0 +1,53 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:${POSTGRES_VERSION:-15}-alpine
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-websocket_demo}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
+      POSTGRES_USER: ${POSTGRES_USER:-root}
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    links:
+      - db
+
+  php:
+    build: ./docker/php
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/var/www/http
+    environment:
+      DATABASE_USER: root
+      DATABASE_PASS: root
+      DATABASE_NAME: websocket_demo
+    links:
+      - db
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/http
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/site.conf
+      - ./docker/nginx/pgadmin.conf:/etc/nginx/conf.d/pgadmin.conf
+    links:
+      - php
+      - db
+
+volumes:
+  db_data:

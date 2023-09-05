@@ -1,0 +1,22 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --fix --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.22.15",
+    "@nuxt/devtools": "latest",
+    "eslint": "^8.48.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "nuxt": "^3.7.1"
+  },
+  "dependencies": {
+    "vue-toastification": "2.0.0-rc.5"
+  }
+}
