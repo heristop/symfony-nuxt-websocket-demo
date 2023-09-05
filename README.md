@@ -47,6 +47,7 @@ git clone https://github.com/heristop/symfony-nuxt-websocket-demo.git
 ```
 
 Server: [Installation Guide](/packages/server/README.md#installation) (Symfony 6, PostgreSQL, Ratchet)
+
 Front: [Installation Guide](/packages/front/README.md#installation) (Nuxt 3, Vue Toastification)
 
 ## 📝 License

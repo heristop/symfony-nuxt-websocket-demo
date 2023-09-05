@@ -1,4 +1,4 @@
-# Nuxt 3 Toastification WebSocket Demo: A Proof of Concept
+# Nuxt 3 Toastification WebSocket Demo
 
 This is a Proof of Concept (POC) demo that illustrates how to integrate real-time notifications in a Nuxt.js application using Vue Toastification.
 

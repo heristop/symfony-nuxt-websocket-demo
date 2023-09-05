@@ -1,4 +1,4 @@
-# WebSocket Demo with Symfony 6 and Queuing System: A Proof of Concept
+# WebSocket Demo with Symfony 6 and Queuing System
 
 This is a Proof of Concept (POC) demonstrating how to implement a WebSocket server and a queuing system using Symfony 6.
 
