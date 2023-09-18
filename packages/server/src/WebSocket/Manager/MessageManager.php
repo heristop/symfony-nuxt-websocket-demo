@@ -11,44 +11,43 @@ use Psr\Log\LoggerInterface;
 
 class MessageManager
 {
-    private MessagesRepository $messageRepository;
-    private LoggerInterface $logger;
-
-    public function __construct(MessagesRepository $messageRepository, LoggerInterface $logger)
-    {
-        $this->messageRepository = $messageRepository;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly MessagesRepository $messageRepository,
+    ) {
     }
 
     public function sendMessage(Messages $message, ?\SplObjectStorage $clients): void
     {
         try {
             $data = $message->getData();
+            $jsonData = json_encode($data);
 
-            // Either the message is addressed to all, or to a specific client
+            if (JSON_ERROR_NONE !== json_last_error()) {
+                throw new \Exception('Malformed JSON Message');
+            }
+
             foreach ($clients as $client) {
                 if (false === isset($data['resourceId'])) {
-                    $client->send(json_encode($data));
-
+                    $client->send($jsonData);
                     continue;
                 }
 
                 if ($client->resourceId === (int) $data['resourceId']) {
-                    $client->send(json_encode($data));
-
+                    $client->send($jsonData);
                     break;
                 }
             }
-
-            $this->removeMessage($message);
         } catch (\Exception $e) {
             $this->logger->error('Failed to send the message', ['exception' => $e]);
+        } finally {
+            $this->removeMessage($message);
         }
     }
 
     public function getQueuedMessages(): array
     {
-        return $this->messageRepository->findAll();
+        return $this->messageRepository->findWithRunDateBeforeNow();
     }
 
     public function createEventMessage(array $data = []): void
@@ -59,17 +58,21 @@ class MessageManager
         $this->messageRepository->save($webSocketMessage);
     }
 
-    public function createNotificationMessage(string $message, string $resourceId = null): void
+    public function createNotificationMessage(string $message, string $resourceId = null, int $delayInSeconds = 0): void
     {
-        $webSocketMessage = new Messages();
-
         $data = [
             'type' => MessageTypeEnum::EVENT_NOTIFICATION,
             'message' => $message,
             'resourceId' => $resourceId,
         ];
 
+        $webSocketMessage = new Messages();
         $webSocketMessage->setData($data);
+
+        // Add the delay to the current date-time
+        $currentDateTime = new \DateTimeImmutable();
+        $runDateWithDelay = $currentDateTime->add(new \DateInterval('PT'.$delayInSeconds.'S'));
+        $webSocketMessage->setRunDate($runDateWithDelay);
 
         $this->messageRepository->save($webSocketMessage);
     }

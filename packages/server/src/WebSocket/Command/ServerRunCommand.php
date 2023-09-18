@@ -23,16 +23,11 @@ class ServerRunCommand extends Command
 {
     private const COMMAND_DESCRIPTION = 'Run WebSocket Server';
 
-    private WebSocketServer $webSocketServer;
-    private MessageManager $messageManager;
-    private LoggerInterface $logger;
-
-    public function __construct(WebSocketServer $webSocketServer, MessageManager $messageManager, LoggerInterface $logger)
-    {
-        $this->messageManager = $messageManager;
-        $this->webSocketServer = $webSocketServer;
-        $this->logger = $logger;
-
+    public function __construct(
+        private readonly WebSocketServer $webSocketServer,
+        private readonly MessageManager $messageManager,
+        private readonly LoggerInterface $logger
+    ) {
         parent::__construct();
     }
 
@@ -81,7 +76,8 @@ class ServerRunCommand extends Command
                 $this->logger
             );
 
-            $output->writeLn(sprintf('🚀 <info>WebSocket server ws://%s:%d is running... press ctrl-c to stop.</info>',
+            $output->writeLn(sprintf(
+                '🚀 <info>WebSocket server ws://%s:%d is running... press ctrl-c to stop.</info>',
                 $input->getOption('address'),
                 $input->getOption('port')
             ));

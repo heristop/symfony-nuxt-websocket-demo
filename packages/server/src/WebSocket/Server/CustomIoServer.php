@@ -15,8 +15,10 @@ class CustomIoServer extends IoServer
     private MessageManager $webSocketManager;
     private LoggerInterface $logger;
 
-    public function attach(MessageManager $webSocketManager, LoggerInterface $logger): self
-    {
+    public function attach(
+        MessageManager $webSocketManager,
+        LoggerInterface $logger
+    ): self {
         $this->webSocketManager = $webSocketManager;
         $this->logger = $logger;
 

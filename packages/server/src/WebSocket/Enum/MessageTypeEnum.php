@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace App\WebSocket\Enum;
 
-class MessageTypeEnum
+/**
+ * Defines message types for WebSocket communication.
+ */
+enum MessageTypeEnum: string
 {
-    public const CONNECTION_CALLBACK = 'connection-callback';
-    public const EVENT_NOTIFICATION = 'event-notification';
+    /**
+     * Indicates an event notification message.
+     */
+    case EVENT_NOTIFICATION = 'event-notification';
+
+    /**
+     * Indicates a connection callback message.
+     */
+    case CONNECTION_CALLBACK = 'connection-callback';
 }
