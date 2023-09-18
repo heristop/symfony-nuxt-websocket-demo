@@ -50,7 +50,7 @@ docker-compose exec php bin/console websocket:server:test
 To push a notification to all connected clients or to a single client identified by a specific `resource id`, run:
 
 ```bash
-docker-compose exec php bin/console websocket:notification:push "Your Toast!" [--resource-id=<RESOURCE_ID>]
+docker-compose exec php bin/console websocket:notification:push "Your Toast!" [--resource-id=<RESOURCE_ID>] [--delay=<DELAY_IN_SECONDS>]
 ```
 
 Replace `<RESOURCE_ID>` with the resource id of the client you wish to target, or omit it to notify all clients.

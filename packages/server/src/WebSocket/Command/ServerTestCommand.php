@@ -19,12 +19,8 @@ class ServerTestCommand extends Command
 {
     private const COMMAND_DESCRIPTION = 'WebSocket Connection Test';
 
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
-
         parent::__construct();
     }
 

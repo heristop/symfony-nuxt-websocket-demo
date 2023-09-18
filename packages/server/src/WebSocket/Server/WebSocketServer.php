@@ -11,13 +11,10 @@ use Ratchet\MessageComponentInterface;
 
 class WebSocketServer implements MessageComponentInterface
 {
-    private LoggerInterface $logger;
     protected ?\SplObjectStorage $clients = null;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
-
         if (null === $this->clients) {
             $this->clients = new \SplObjectStorage();
         }
@@ -31,7 +28,8 @@ class WebSocketServer implements MessageComponentInterface
         try {
             $this->clients->attach($connection);
 
-            $this->logger->info(sprintf('New client connected with resourceId "%d"',
+            $this->logger->info(sprintf(
+                'New client connected with resourceId "%d"',
                 /* @phpstan-ignore-next-line */
                 $connection->resourceId
             ));
@@ -44,7 +42,8 @@ class WebSocketServer implements MessageComponentInterface
 
             $connection->send(json_encode($data));
 
-            $this->logger->info(sprintf('Callback resourceId "%d" sent',
+            $this->logger->info(sprintf(
+                'Callback resourceId "%d" sent',
                 /* @phpstan-ignore-next-line */
                 $connection->resourceId
             ));
@@ -56,7 +55,8 @@ class WebSocketServer implements MessageComponentInterface
     public function onMessage(ConnectionInterface $from, $message): void
     {
         try {
-            $this->logger->info(sprintf('Connection %d sending message "%s" to %d other connections',
+            $this->logger->info(sprintf(
+                'Connection %d sending message "%s" to %d other connections',
                 /* @phpstan-ignore-next-line */
                 $from->resourceId,
                 $message,

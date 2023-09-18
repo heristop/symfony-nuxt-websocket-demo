@@ -10,6 +10,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
@@ -19,14 +20,10 @@ class NotificationPushCommand extends Command
 {
     private const COMMAND_DESCRIPTION = 'Push a notification to WebSocket clients.';
 
-    private MessageManager $messageManager;
-    private LoggerInterface $logger;
-
-    public function __construct(MessageManager $messageManager, LoggerInterface $logger)
-    {
-        $this->messageManager = $messageManager;
-        $this->logger = $logger;
-
+    public function __construct(
+        private readonly MessageManager $messageManager,
+        private readonly LoggerInterface $logger
+    ) {
         parent::__construct();
     }
 
@@ -35,7 +32,8 @@ class NotificationPushCommand extends Command
         $this
             ->setDescription(self::COMMAND_DESCRIPTION)
             ->addArgument('notification', InputArgument::REQUIRED, 'The notification to push.')
-            ->addOption('resource-id', null, InputArgument::OPTIONAL, 'Resource Id.');
+            ->addOption('resource-id', null, InputOption::VALUE_OPTIONAL, 'Resource Id.')
+            ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'The delay in seconds before pushing the notification', '0');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -43,7 +41,8 @@ class NotificationPushCommand extends Command
         try {
             $this->messageManager->createNotificationMessage(
                 $input->getArgument('notification'),
-                $input->getOption('resource-id')
+                $input->getOption('resource-id'),
+                (int) $input->getOption('delay'),
             );
         } catch (\RuntimeException $e) {
             $this->logger->error('Failed to push the notification', ['exception' => $e]);

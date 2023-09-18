@@ -19,6 +19,9 @@ class Messages
     #[ORM\Column(type: 'json')]
     private array $data = [];
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $runDate = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -32,6 +35,18 @@ class Messages
     public function setData(array $data): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    public function getRunDate(): ?\DateTimeImmutable
+    {
+        return $this->runDate;
+    }
+
+    public function setRunDate(?\DateTimeImmutable $runDate): self
+    {
+        $this->runDate = $runDate;
 
         return $this;
     }
